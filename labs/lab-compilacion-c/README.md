@@ -32,6 +32,7 @@ Este laboratorio se entrega a través de un repositorio personal creado en la or
 **El flujo es simple**: trabajás en `main`, verificás localmente con `make test`, y cuando está listo hacés push. GitHub ejecuta el workflow central de CI y podés ver los resultados en la pestaña **Actions** de tu repositorio.
 
 **Opciones para trabajar:**
+
 - **Local:** clonar el repositorio en tu máquina con `git clone` y trabajar con el editor que prefieras.
 - **GitHub Codespaces:** desde la página de tu repositorio, hacé clic en el botón verde **"Code" → "Codespaces" → "Create codespace"**. Se abre un VSCode en el navegador con todo el entorno listo, sin instalar nada.
 
@@ -277,6 +278,7 @@ Las directivas no generan código de máquina; desaparecen antes de la compilaci
 Una **macro** es un nombre definido con `#define` que el preprocesador reemplaza textualmente en el código fuente. Hay dos tipos:
 
 - **Macro de objeto** (constante simbólica): reemplaza un nombre por un valor.
+
   ```c
   #define PI    3.14159     // PI se reemplaza por 3.14159
   #define LIMITE 5          // LIMITE se reemplaza por 5
@@ -305,10 +307,10 @@ Durante la compilación, el compilador sólo necesita saber la **declaración** 
 
 ## Archivos del laboratorio
 
-| Archivo | Rol |
-|---|---|
-| `programa.c` | Archivo fuente principal. Contiene `main()`, usa macros, directivas y llama a funciones externas. |
-| `matematica.h` | Encabezado con macros (`PI`, `CUADRADO`, `MAX`) y prototipos de funciones. |
+| Archivo        | Rol                                                                                                |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| `programa.c`   | Archivo fuente principal. Contiene `main()`, usa macros, directivas y llama a funciones externas.  |
+| `matematica.h` | Encabezado con macros (`PI`, `CUADRADO`, `MAX`) y prototipos de funciones.                         |
 | `matematica.c` | Implementación de `area_circulo()` y `factorial()`. Es una **unidad de traducción independiente**. |
 
 > **Unidad de traducción:** cada archivo `.c` (con sus headers incluidos) que el compilador procesa de forma independiente. El enlazador luego las une.
@@ -323,14 +325,14 @@ El **preprocesador** es un paso anterior a la compilación propiamente dicha. No
 
 Sus tareas son:
 
-| Directiva | Tarea |
-|---|---|
-| `#include <archivo>` | Busca el archivo **solo en los directorios del sistema** (headers estándar: `stdio.h`, `stdlib.h`, etc.) |
-| `#include "archivo"` | Busca **primero en el directorio del proyecto**, y si no lo encuentra, en los del sistema |
-| `#define NOMBRE valor` | Define una macro: toda ocurrencia de `NOMBRE` se reemplaza por `valor` |
-| `#define MACRO(x) expr` | Define una macro función: se expande con sustitución de parámetros |
-| `#ifdef / #ifndef / #endif` | Inclusión condicional de bloques de código |
-| Comentarios `/* */` y `//` | Se **eliminan** completamente |
+| Directiva                   | Tarea                                                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `#include <archivo>`        | Busca el archivo **solo en los directorios del sistema** (headers estándar: `stdio.h`, `stdlib.h`, etc.) |
+| `#include "archivo"`        | Busca **primero en el directorio del proyecto**, y si no lo encuentra, en los del sistema                |
+| `#define NOMBRE valor`      | Define una macro: toda ocurrencia de `NOMBRE` se reemplaza por `valor`                                   |
+| `#define MACRO(x) expr`     | Define una macro función: se expande con sustitución de parámetros                                       |
+| `#ifdef / #ifndef / #endif` | Inclusión condicional de bloques de código                                                               |
+| Comentarios `/* */` y `//`  | Se **eliminan** completamente                                                                            |
 
 > **`<>` vs `""`:** la diferencia es dónde busca el preprocesador el archivo.
 >
@@ -359,6 +361,7 @@ wc -l programa.i
 El número de líneas varía según el sistema operativo y la versión del compilador, porque cada sistema tiene su propia implementación de los headers estándar (`stdio.h`, `stdlib.h`, etc.) con distinta cantidad de declaraciones internas, typedefs y macros auxiliares.
 
 Valores típicos orientativos:
+
 - **macOS** (Xcode / Apple Clang): ~1800 líneas
 - **Linux** (Ubuntu/Debian con glibc): ~800–1000 líneas
 - **Windows** (MSYS2 / MinGW): ~600–900 líneas
@@ -370,7 +373,8 @@ Todos son correctos. Lo importante no es el número exacto sino que sea **varios
 **P1.** Ejecutá `wc -l programa.i` y escribí el número de líneas que obtenés.
 
 <!-- Completá la línea siguiente con el número exacto (solo dígitos, sin espacios): -->
-LINEAS_I=
+
+LINEAS_I=821
 
 ¿Por qué ese número es tan mayor que las 94 líneas de `programa.c`?
 
@@ -389,6 +393,7 @@ grep "patrón" archivo
 Si no encuentra nada, no imprime nada. Si el patrón no existe en el archivo, el comando termina en silencio. Se usará a lo largo del laboratorio para verificar qué contiene (o no contiene) cada producto intermedio.
 
 Algunas opciones útiles:
+
 - `-n` muestra el número de línea de cada coincidencia
 - `-c` cuenta cuántas líneas coinciden (sin mostrarlas)
 - `\|` en el patrón significa "o" (busca una cosa o la otra)
@@ -396,13 +401,16 @@ Algunas opciones útiles:
 #### Observación 1: Los comentarios desaparecen
 
 El encabezado de `programa.c` tenía este comentario de bloque:
+
 ```c
 /*
  * programa.c  —  Archivo fuente principal
  * ...
  */
 ```
+
 En `programa.i` no existe ningún rastro de él. Buscar para confirmar:
+
 ```bash
 grep "Archivo fuente principal" programa.i   # no debe encontrar nada
 ```
@@ -413,7 +421,8 @@ grep "Archivo fuente principal" programa.i   # no debe encontrar nada
 ¿El comando encuentra algo o no devuelve nada?
 
 <!-- Completá con SI (si encontró algo) o NO (si no encontró nada): -->
-COMENTARIOS_EN_I=
+
+COMENTARIOS_EN_I=NO
 
 ¿Por qué ocurre eso?
 
@@ -424,18 +433,21 @@ COMENTARIOS_EN_I=
 #### Observación 2: Las macros se expanden
 
 En el fuente original:
+
 ```c
 printf("=== Laboratorio de Compilacion en C (v%s) ===\n\n", VERSION);
 printf("CUADRADO(%d)      = %d\n", LIMITE, CUADRADO(LIMITE));
 ```
 
 En `programa.i` esas líneas quedaron como:
+
 ```c
 printf("=== Laboratorio de Compilacion en C (v%s) ===\n\n", "1.0");
 printf("CUADRADO(%d)      = %d\n", 5, ((5) * (5)));
 ```
 
 Buscar en el archivo para verificarlo:
+
 ```bash
 grep -n "1.0\|CUADRADO" programa.i
 ```
@@ -452,7 +464,8 @@ Nótese que `CUADRADO(5)` se expande a `((5) * (5))`, con los paréntesis extra 
 por otra cosa? Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-CUADRADO_EN_I=
+
+CUADRADO_EN_I=NO
 
 ---
 
@@ -463,13 +476,15 @@ CUADRADO_EN_I=
 ¿Cuál era el nombre de la macro en `programa.c` que fue reemplazada por `"1.0"`?
 
 <!-- Completá con el nombre exacto de la macro (en mayúsculas, como está en el fuente): -->
-NOMBRE_MACRO_VERSION=
+
+NOMBRE_MACRO_VERSION=VERSION
 
 ---
 
 #### Observación 3: Compilación condicional
 
 `programa.c` tiene este bloque:
+
 ```c
 #ifdef DEBUG
     #define LOG(msg)  printf("[DEBUG] %s\n", (msg))
@@ -494,6 +509,7 @@ gcc -E -DDEBUG programa.c | grep "Iniciando"
 ---
 
 **P5.** Ejecutá los siguientes dos comandos y copiá la salida de cada uno:
+
 ```bash
 gcc -E programa.c | grep "Iniciando"
 gcc -E -DDEBUG programa.c | grep "Iniciando"
@@ -505,7 +521,8 @@ gcc -E -DDEBUG programa.c | grep "Iniciando"
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-DEBUG_ACTIVA_CODIGO=
+
+DEBUG_ACTIVA_CODIGO=SI
 
 ---
 
@@ -577,14 +594,14 @@ El código fuente preprocesado es, a los ojos del compilador, una secuencia de c
 
 Un **token** tiene dos atributos: su **clase** (qué tipo de cosa es) y su **lexema** (el texto exacto en el fuente). Las clases de tokens en C son:
 
-| Clase | Ejemplos |
-|---|---|
-| Palabra clave (keyword) | `int`, `return`, `if`, `while`, `void` |
-| Identificador | `sumar`, `resultado`, `llamadas`, `main` |
-| Literal numérico | `3`, `4`, `5.0`, `3.14` |
-| Literal de cadena | `"Laboratorio"`, `"%d\n"` |
-| Operador | `+`, `++`, `=`, `>`, `*` |
-| Delimitador / puntuador | `(`, `)`, `{`, `}`, `;`, `,` |
+| Clase                   | Ejemplos                                 |
+| ----------------------- | ---------------------------------------- |
+| Palabra clave (keyword) | `int`, `return`, `if`, `while`, `void`   |
+| Identificador           | `sumar`, `resultado`, `llamadas`, `main` |
+| Literal numérico        | `3`, `4`, `5.0`, `3.14`                  |
+| Literal de cadena       | `"Laboratorio"`, `"%d\n"`                |
+| Operador                | `+`, `++`, `=`, `>`, `*`                 |
+| Delimitador / puntuador | `(`, `)`, `{`, `}`, `;`, `,`             |
 
 El analizador léxico **no sabe nada de gramática**: no distingue si un `(` abre la firma de una función o la condición de un `if`. Sólo reconoce patrones usando expresiones regulares (o autómatas finitos equivalentes). Su salida es un flujo lineal de tokens que pasa a la siguiente fase.
 
@@ -605,13 +622,16 @@ El **AST** (Abstract Syntax Tree, Árbol de Sintaxis Abstracta) es la estructura
 Se llama "abstracto" porque **omite detalles sintácticos superfluos** que no aportan significado: los paréntesis de agrupación, los puntos y coma, las llaves. Lo que importa es la estructura lógica, no los tokens exactos que la delimitaron.
 
 Por ejemplo, el código fuente:
+
 ```c
 int sumar(int a, int b) {
     llamadas++;
     return a + b;
 }
 ```
+
 produce un árbol como éste:
+
 ```
 FunctionDecl  "sumar"  tipo: int(int, int)
 ├── ParmVarDecl  "a"  tipo: int
@@ -636,6 +656,7 @@ El **lenguaje ensamblador** (assembly) es la representación textual y legible d
 Es el nivel de abstracción más bajo que aún puede leer un humano. A diferencia de C, no hay bucles `for`, funciones con nombre propio ni tipos: todo son registros (`w0`, `x1`...), posiciones de memoria y saltos condicionales.
 
 Un archivo `.s` es simplemente texto con esas instrucciones. Cada arquitectura tiene su propio conjunto de instrucciones (ISA):
+
 - **ARM64** (Apple Silicon, Raspberry Pi): instrucciones como `sub`, `str`, `ldr`, `bl`, `ret`
 - **x86-64** (Intel/AMD en Linux y Windows): instrucciones como `mov`, `push`, `call`, `ret`
 
@@ -674,6 +695,7 @@ _sumar:                         ; etiqueta: marca dónde comienza la función su
 #### Observación: Las funciones externas aparecen como llamadas sin definición
 
 Buscar referencias a funciones externas en el ensamblador:
+
 ```bash
 grep "area_circulo\|factorial\|printf" programa.s
 ```
@@ -686,12 +708,13 @@ Aparecen como instrucciones de llamada (por ejemplo `bl _area_circulo`), pero **
 
 > **R:**
 
-¿`area_circulo` aparece como una función *definida* en `programa.s`
-(con su propio bloque de instrucciones) o solo como una *llamada* (instrucción sin cuerpo)?
+¿`area_circulo` aparece como una función _definida_ en `programa.s`
+(con su propio bloque de instrucciones) o solo como una _llamada_ (instrucción sin cuerpo)?
 Respondé DEFINIDA o LLAMADA:
 
 <!-- Completá con DEFINIDA o LLAMADA: -->
-AREA_EN_S=
+
+AREA_EN_S=LLAMADA
 
 ---
 
@@ -708,6 +731,7 @@ Explicá en términos generales qué hacen esas instrucciones
 ---
 
 Ejecutar para verificar si la variable `llamadas` aparece en el ensamblador:
+
 ```bash
 grep "llamadas" programa.s
 ```
@@ -722,24 +746,31 @@ grep "llamadas" programa.s
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-LLAMADAS_EN_S=
+
+LLAMADAS_EN_S=SI
 
 ---
 
 #### Errores detectados en esta etapa
 
 Introducir deliberadamente un error semántico. Editar `programa.c` y cambiar:
+
 ```c
 resultado = sumar(3, 4);
 ```
+
 por:
+
 ```c
 resultado = sumar(3, 4, 5);   /* demasiados argumentos */
 ```
+
 Al intentar compilar:
+
 ```bash
 gcc -S programa.c   # genera un error de tipos/argumentos
 ```
+
 El compilador lo detecta porque ya tiene la declaración de `sumar` y puede verificar la firma. **Restaurar** el código original antes de continuar.
 
 ---
@@ -756,17 +787,17 @@ El **ensamblador** (`as`) traduce el archivo `.s` (texto) a **código objeto** (
 
 Todos estos formatos tienen la misma idea: son contenedores binarios que almacenan varias secciones:
 
-| Sección | Contenido |
-|---|---|
-| `.text` | Las instrucciones de máquina de las funciones |
-| `.data` | Variables globales con valor inicial |
-| `.bss` | Variables globales inicializadas en cero |
-| Tabla de símbolos | Lista de nombres (funciones/variables) que este archivo define o necesita |
+| Sección              | Contenido                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| `.text`              | Las instrucciones de máquina de las funciones                                          |
+| `.data`              | Variables globales con valor inicial                                                   |
+| `.bss`               | Variables globales inicializadas en cero                                               |
+| Tabla de símbolos    | Lista de nombres (funciones/variables) que este archivo define o necesita              |
 | Tabla de reubicación | Lista de posiciones que el enlazador deberá corregir cuando asigne direcciones finales |
 
 #### ¿Qué son los símbolos indefinidos (`U`)?
 
-Un archivo `.o` puede hacer referencia a funciones o variables que **no están en él**: viven en otro `.o` o en una biblioteca. Esas referencias se registran en la tabla de símbolos con el tipo `U` (Undefined = indefinido), lo que significa: *"sé que esto existe y lo necesito, pero no sé dónde está todavía"*.
+Un archivo `.o` puede hacer referencia a funciones o variables que **no están en él**: viven en otro `.o` o en una biblioteca. Esas referencias se registran en la tabla de símbolos con el tipo `U` (Undefined = indefinido), lo que significa: _"sé que esto existe y lo necesito, pero no sé dónde está todavía"_.
 
 Esto es intencional: permite compilar cada archivo `.c` de forma independiente, y luego unir todo en el enlazado. Si los `.o` no pudieran tener referencias indefinidas, habría que compilar todos los archivos juntos siempre, lo que sería muy costoso en proyectos grandes.
 
@@ -780,19 +811,19 @@ Esto es intencional: permite compilar cada archivo `.c` de forma independiente, 
 
 Los tipos más comunes son:
 
-| Tipo | Significado |
-|---|---|
-| `T` | Definido en la sección **text** (código ejecutable), funciones |
-| `D` | Definido en la sección **data**, variable global **con valor inicial** (ej: `int x = 5;`) |
-| `S` | Definido en una sección de datos del sistema (macOS); similar a `D` pero en una sección separada que el SO gestiona. En Linux esto suele aparecer como `D` |
-| `B` | Definido en la sección **BSS** (Block Started by Symbol), variable global **sin valor inicial** o inicializada en cero (ej: `int x;` o `int x = 0;`). El SO reserva el espacio pero no lo guarda en el archivo, solo anota el tamaño |
-| `U` | **Indefinido** (Undefined). se necesita pero no está definido en este archivo |
+| Tipo | Significado                                                                                                                                                                                                                          |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `T`  | Definido en la sección **text** (código ejecutable), funciones                                                                                                                                                                       |
+| `D`  | Definido en la sección **data**, variable global **con valor inicial** (ej: `int x = 5;`)                                                                                                                                            |
+| `S`  | Definido en una sección de datos del sistema (macOS); similar a `D` pero en una sección separada que el SO gestiona. En Linux esto suele aparecer como `D`                                                                           |
+| `B`  | Definido en la sección **BSS** (Block Started by Symbol), variable global **sin valor inicial** o inicializada en cero (ej: `int x;` o `int x = 0;`). El SO reserva el espacio pero no lo guarda en el archivo, solo anota el tamaño |
+| `U`  | **Indefinido** (Undefined). se necesita pero no está definido en este archivo                                                                                                                                                        |
 
 > **`D` vs `B`:** ambos son variables globales, pero `D` tiene un valor inicial que se debe guardar en el archivo objeto (porque el programa necesita leerlo al arrancar), mientras que `B` se inicializa en cero y el sistema operativo puede hacerlo solo al cargar el proceso, no hace falta guardarlo en el archivo. Esto hace que los ejecutables sean más pequeños.
 
 > **`S` en macOS:** en macOS, las variables globales con valor inicial suelen aparecer como `S` en lugar de `D` porque Mach-O (el formato de objeto de macOS) las ubica en una sección `__DATA` separada. El concepto es el mismo que `D`.
 
-`nm` es útil para diagnosticar errores de enlazado: si el enlazador dice *"símbolo no encontrado"*, `nm` permite ver exactamente en qué `.o` se necesita y en cuál debería estar definido.
+`nm` es útil para diagnosticar errores de enlazado: si el enlazador dice _"símbolo no encontrado"_, `nm` permite ver exactamente en qué `.o` se necesita y en cuál debería estar definido.
 
 ### Práctica
 
@@ -832,7 +863,8 @@ Salida esperada (simplificada):
 Escribí solo la letra (una mayúscula):
 
 <!-- Completá con la letra exacta que muestra nm (U, T, D, etc.): -->
-TIPO_AREA_EN_O=
+
+TIPO_AREA_EN_O=U
 
 ---
 
@@ -845,7 +877,7 @@ nm matematica.o
 0000000000000034 T _factorial         ← DEFINIDO aquí
 ```
 
-> **Clave:** `programa.o` declara que *necesita* `_area_circulo` y `_factorial` (símbolo `U`). `matematica.o` los *define* (símbolo `T`). El enlazador los conectará.
+> **Clave:** `programa.o` declara que _necesita_ `_area_circulo` y `_factorial` (símbolo `U`). `matematica.o` los _define_ (símbolo `T`). El enlazador los conectará.
 
 ---
 
@@ -858,7 +890,8 @@ pero tipo `T` en `matematica.o`?
 Respondé con una palabra: PREPROCESAMIENTO, COMPILACION, ENSAMBLADO o ENLAZADO:
 
 <!-- Completá con una de las cuatro opciones: -->
-ETAPA_QUE_RESUELVE=
+
+ETAPA_QUE_RESUELVE=ENLAZADO
 
 ---
 
@@ -883,7 +916,8 @@ Un `.o` no es ejecutable por dos razones:
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-EJECUTABLE_O=
+
+EJECUTABLE_O=NO
 
 ---
 
@@ -912,12 +946,14 @@ libc.dylib  ──┘  (contiene printf, exit, crt1, malloc, etc.)
 Una **biblioteca** (library) es una colección de funciones precompiladas, empaquetadas en un único archivo, listas para ser reutilizadas por cualquier programa. Existen dos tipos:
 
 **Biblioteca estática** (`.a` en Linux/macOS, `.lib` en Windows):
+
 - Es un archivo que contiene varios `.o` agrupados.
 - El enlazador **copia** el código de las funciones que se usan directamente dentro del ejecutable.
 - El ejecutable resultante no tiene dependencias externas en tiempo de ejecución.
 - Desventaja: el ejecutable es más grande; si la biblioteca se actualiza, hay que recompilar.
 
 **Biblioteca dinámica** (`.so` en Linux, `.dylib` en macOS, `.dll` en Windows):
+
 - El ejecutable sólo guarda una **referencia** al nombre de la biblioteca.
 - El código real se carga en memoria en tiempo de ejecución, cuando se lanza el programa.
 - Ventaja: menor tamaño del ejecutable; múltiples programas comparten la misma copia en memoria; actualizar la biblioteca no requiere recompilar los programas.
@@ -931,12 +967,12 @@ Una función especialmente importante de `libc` es **`exit()`**. Cuando `main()`
 
 **Enlazado estático vs dinámico:**
 
-| | Estático | Dinámico |
-|---|---|---|
-| Las funciones de bibliotecas | se copian en el ejecutable | se cargan en tiempo de ejecución |
-| Tamaño del ejecutable | mayor | menor |
-| Dependencias en tiempo de ejecución | ninguna | necesita las `.so`/`.dylib` |
-| Uso típico | sistemas embebidos, distribución única | aplicaciones de escritorio/servidor |
+|                                     | Estático                               | Dinámico                            |
+| ----------------------------------- | -------------------------------------- | ----------------------------------- |
+| Las funciones de bibliotecas        | se copian en el ejecutable             | se cargan en tiempo de ejecución    |
+| Tamaño del ejecutable               | mayor                                  | menor                               |
+| Dependencias en tiempo de ejecución | ninguna                                | necesita las `.so`/`.dylib`         |
+| Uso típico                          | sistemas embebidos, distribución única | aplicaciones de escritorio/servidor |
 
 ### Práctica
 
@@ -944,7 +980,7 @@ Una función especialmente importante de `libc` es **`exit()`**. Cuando `main()`
 gcc programa.o matematica.o -o programa
 ```
 
-`gcc` actúa aquí como un *driver* que invoca al enlazador real (`ld`) con los parámetros correctos, incluyendo automáticamente `libc`.
+`gcc` actúa aquí como un _driver_ que invoca al enlazador real (`ld`) con los parámetros correctos, incluyendo automáticamente `libc`.
 
 #### Verificar que los símbolos se resolvieron
 
@@ -978,7 +1014,8 @@ Ejecutá `nm programa | grep "area_circulo"` y copiá la salida.
 Escribí solo la letra:
 
 <!-- Completá con la letra exacta que muestra nm: -->
-TIPO_AREA_ENLAZADO=
+
+TIPO_AREA_ENLAZADO=T
 
 ---
 
@@ -1000,7 +1037,8 @@ Quedan algunos `U` incluso en el ejecutable final. ¿Por qué? Son funciones de 
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-SIMBOLOS_U_FINAL=
+
+SIMBOLOS_U_FINAL=SI
 
 ¿Por qué quedan? ¿Quién los resuelve y cuándo?
 
@@ -1023,7 +1061,8 @@ SIMBOLOS_U_FINAL=
 ¿Qué valor da `factorial(5)`? Escribí solo el número:
 
 <!-- Completá con el número exacto: -->
-FACTORIAL_5=
+
+FACTORIAL_5=120
 
 ---
 
@@ -1065,7 +1104,7 @@ y copiá la salida.
 
 Desde el punto de vista del usuario, Clang y GCC son intercambiables: aceptan los mismos flags (`-E`, `-S`, `-c`, `-Wall`, `-DNOMBRE`, etc.) y producen ejecutables equivalentes. La diferencia está en la arquitectura interna: Clang está diseñado con una separación más clara entre fases y expone su funcionamiento interno a través de flags especiales (`-Xclang`), lo que lo hace especialmente útil para estudiar el proceso de compilación.
 
-**LLVM** (Low Level Virtual Machine) es la infraestructura de compilación sobre la que Clang se construye. GCC y Clang son los *frontends* (analizan C y producen una representación intermedia); LLVM es el *backend* (optimiza y genera código de máquina).
+**LLVM** (Low Level Virtual Machine) es la infraestructura de compilación sobre la que Clang se construye. GCC y Clang son los _frontends_ (analizan C y producen una representación intermedia); LLVM es el _backend_ (optimiza y genera código de máquina).
 
 ```
 Código C
@@ -1173,16 +1212,16 @@ clang -Xclang -ast-dump    programa.c 2>/dev/null | grep -A 20 "FunctionDecl.*su
 
 ## Tabla de extensiones de archivo
 
-| Extensión | Contenido | Etapa que lo produce |
-|---|---|---|
-| `.c` | Código fuente C | (escrito por el programador) |
-| `.h` | Encabezado C | (escrito por el programador) |
-| `.i` | C preprocesado (texto) | Preprocesador (`-E`) |
-| `.s` | Ensamblador (texto) | Compilador (`-S`) |
-| `.o` | Código objeto (binario) | Ensamblador (`-c`) |
-| `.a` | Biblioteca estática (colección de `.o`) | Herramienta `ar` |
-| `.so` / `.dylib` | Biblioteca dinámica | Enlazador con `-shared` |
-| (sin ext. / `.exe`) | Ejecutable (binario) | Enlazador |
+| Extensión           | Contenido                               | Etapa que lo produce         |
+| ------------------- | --------------------------------------- | ---------------------------- |
+| `.c`                | Código fuente C                         | (escrito por el programador) |
+| `.h`                | Encabezado C                            | (escrito por el programador) |
+| `.i`                | C preprocesado (texto)                  | Preprocesador (`-E`)         |
+| `.s`                | Ensamblador (texto)                     | Compilador (`-S`)            |
+| `.o`                | Código objeto (binario)                 | Ensamblador (`-c`)           |
+| `.a`                | Biblioteca estática (colección de `.o`) | Herramienta `ar`             |
+| `.so` / `.dylib`    | Biblioteca dinámica                     | Enlazador con `-shared`      |
+| (sin ext. / `.exe`) | Ejecutable (binario)                    | Enlazador                    |
 
 ---
 
@@ -1192,14 +1231,14 @@ clang -Xclang -ast-dump    programa.c 2>/dev/null | grep -A 20 "FunctionDecl.*su
 
 Al finalizar, el repositorio debe contener estos archivos (los fuentes `programa.c`, `matematica.c`, `matematica.h` y `proceso_compilacion.md` ya estaban):
 
-| Archivo | Cómo se genera |
-|---|---|
-| `programa.i` | `gcc -E programa.c -o programa.i` |
-| `programa.s` | `gcc -S programa.c -o programa.s` |
-| `salidas/nm_programa_o.txt` | `nm programa.o > salidas/nm_programa_o.txt` |
-| `salidas/nm_ejecutable.txt` | `nm programa > salidas/nm_ejecutable.txt` |
-| `salidas/salida_debug.txt` | `gcc -DDEBUG programa.c matematica.c -o programa_debug && ./programa_debug > salidas/salida_debug.txt` |
-| `proceso_compilacion.md` | completado con tus respuestas |
+| Archivo                     | Cómo se genera                                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `programa.i`                | `gcc -E programa.c -o programa.i`                                                                      |
+| `programa.s`                | `gcc -S programa.c -o programa.s`                                                                      |
+| `salidas/nm_programa_o.txt` | `nm programa.o > salidas/nm_programa_o.txt`                                                            |
+| `salidas/nm_ejecutable.txt` | `nm programa > salidas/nm_ejecutable.txt`                                                              |
+| `salidas/salida_debug.txt`  | `gcc -DDEBUG programa.c matematica.c -o programa_debug && ./programa_debug > salidas/salida_debug.txt` |
+| `proceso_compilacion.md`    | completado con tus respuestas                                                                          |
 
 **No commitear:** `programa.o`, `matematica.o`, ni ejecutables. El `.gitignore` ya los excluye.
 
@@ -1207,29 +1246,29 @@ Al finalizar, el repositorio debe contener estos archivos (los fuentes `programa
 
 ## Referencia rápida: Opciones de GCC usadas
 
-| Opción | Efecto |
-|---|---|
-| `-E` | Detener tras el preprocesamiento |
-| `-S` | Detener tras la compilación (genera `.s`) |
-| `-c` | Detener tras el ensamblado (genera `.o`) |
-| `-o archivo` | Nombre del archivo de salida |
-| `-Wall` | Activar todos los avisos (warnings) importantes |
-| `-DNOMBRE` | Definir la macro `NOMBRE` (equivale a `#define NOMBRE 1`) |
-| `-DNOMBRE=valor` | Definir `NOMBRE` con un valor específico |
-| `-g` | Incluir información de depuración (para usar con `gdb`) |
-| `-O2` | Optimización nivel 2 |
-| `-static` | Forzar enlazado estático |
+| Opción           | Efecto                                                    |
+| ---------------- | --------------------------------------------------------- |
+| `-E`             | Detener tras el preprocesamiento                          |
+| `-S`             | Detener tras la compilación (genera `.s`)                 |
+| `-c`             | Detener tras el ensamblado (genera `.o`)                  |
+| `-o archivo`     | Nombre del archivo de salida                              |
+| `-Wall`          | Activar todos los avisos (warnings) importantes           |
+| `-DNOMBRE`       | Definir la macro `NOMBRE` (equivale a `#define NOMBRE 1`) |
+| `-DNOMBRE=valor` | Definir `NOMBRE` con un valor específico                  |
+| `-g`             | Incluir información de depuración (para usar con `gdb`)   |
+| `-O2`            | Optimización nivel 2                                      |
+| `-static`        | Forzar enlazado estático                                  |
 
 ## Referencia rápida: Herramientas de inspección
 
-| Herramienta | Uso | Ejemplo |
-|---|---|---|
-| `wc -l` | Contar líneas de un archivo | `wc -l programa.i` |
-| `grep` | Buscar patrón en archivo | `grep "printf" programa.s` |
-| `head -N` | Ver primeras N líneas | `head -20 programa.s` |
-| `nm` | Tabla de símbolos de `.o` o ejecutable | `nm programa.o` |
-| `clang -Xclang -dump-tokens` | Análisis léxico (tokens) | ver sección Bonus |
-| `clang -Xclang -ast-dump` | AST (análisis sintáctico+semántico) | ver sección Bonus |
+| Herramienta                  | Uso                                    | Ejemplo                    |
+| ---------------------------- | -------------------------------------- | -------------------------- |
+| `wc -l`                      | Contar líneas de un archivo            | `wc -l programa.i`         |
+| `grep`                       | Buscar patrón en archivo               | `grep "printf" programa.s` |
+| `head -N`                    | Ver primeras N líneas                  | `head -20 programa.s`      |
+| `nm`                         | Tabla de símbolos de `.o` o ejecutable | `nm programa.o`            |
+| `clang -Xclang -dump-tokens` | Análisis léxico (tokens)               | ver sección Bonus          |
+| `clang -Xclang -ast-dump`    | AST (análisis sintáctico+semántico)    | ver sección Bonus          |
 
 ---
 
