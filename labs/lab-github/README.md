@@ -76,15 +76,15 @@ Vas a ver que `multiplicar` devuelve 0 — eso es lo esperado, es lo que vas a i
 
 ## Qué vas a aprender
 
-| Concepto | Dónde lo practicás |
-|---|---|
-| Crear y cambiar branches | Parte I |
-| Commits atómicos y mensajes claros | Parte I |
-| Push y Pull Requests | Parte I |
-| Agregar colaboradores | Parte II |
-| Revisar y aprobar un PR | Parte II |
-| Revertir un commit | Parte III |
-| Resolver un conflicto de merge | Parte IV |
+| Concepto                           | Dónde lo practicás |
+| ---------------------------------- | ------------------ |
+| Crear y cambiar branches           | Parte I            |
+| Commits atómicos y mensajes claros | Parte I            |
+| Push y Pull Requests               | Parte I            |
+| Agregar colaboradores              | Parte II           |
+| Revisar y aprobar un PR            | Parte II           |
+| Revertir un commit                 | Parte III          |
+| Resolver un conflicto de merge     | Parte IV           |
 
 ---
 
@@ -102,13 +102,13 @@ RESPUESTA_PX=b
 
 **Reglas — leelas con atención, son las que usa el corrector automático:**
 
-| | Ejemplo | ¿Por qué falla? |
-|---|---|---|
-| ❌ | `RESPUESTA_P1= b` | hay un espacio antes de la letra |
-| ❌ | `RESPUESTA_P1=B` | la letra debe ser minúscula |
-| ❌ | `RESPUESTA_P1=b)` | no va el paréntesis |
-| ❌ | `RESPUESTA_P1="b"` | no van comillas |
-| ✅ | `RESPUESTA_P1=b` | correcto |
+|     | Ejemplo            | ¿Por qué falla?                  |
+| --- | ------------------ | -------------------------------- |
+| ❌  | `RESPUESTA_P1= b`  | hay un espacio antes de la letra |
+| ❌  | `RESPUESTA_P1=B`   | la letra debe ser minúscula      |
+| ❌  | `RESPUESTA_P1=b)`  | no va el paréntesis              |
+| ❌  | `RESPUESTA_P1="b"` | no van comillas                  |
+| ✅  | `RESPUESTA_P1=b`   | correcto                         |
 
 Solo se acepta **una letra minúscula** (`a`, `b`, `c` o `d`) pegada al `=`, sin ningún otro caracter.
 
@@ -211,13 +211,13 @@ git commit -m "Implementa multiplicar con operador *"
 
 **¿Qué es un buen mensaje de commit?**
 
-Un mensaje de commit debe explicar **qué hace** el cambio, no *cómo* lo hace. Tiene que ser legible para un compañero que ve el historial sin ver el código. Imaginá que alguien necesita entender, en 30 segundos, qué pasó en este proyecto hace seis meses: los mensajes de commit son la primera fuente de información.
+Un mensaje de commit debe explicar **qué hace** el cambio, no _cómo_ lo hace. Tiene que ser legible para un compañero que ve el historial sin ver el código. Imaginá que alguien necesita entender, en 30 segundos, qué pasó en este proyecto hace seis meses: los mensajes de commit son la primera fuente de información.
 
-| ❌ Mal | ✅ Bien |
-|---|---|
-| `fix` | `Corrige bug en esPar para negativos` |
-| `cambios` | `Implementa multiplicar con operador *` |
-| `wip` | `Agrega validación de entrada en sumar` |
+| ❌ Mal    | ✅ Bien                                              |
+| --------- | ---------------------------------------------------- |
+| `fix`     | `Corrige bug en esPar para negativos`                |
+| `cambios` | `Implementa multiplicar con operador *`              |
+| `wip`     | `Agrega validación de entrada en sumar`              |
 | `asdfjkl` | `Refactoriza multiplicar: extrae variable resultado` |
 
 ---
@@ -304,7 +304,7 @@ c) Para que el historial de commits sea más corto y lineal
 d) Porque la plataforma lo requiere para poder crear el pull request
 
 ```
-RESPUESTA_P1=
+RESPUESTA_P1=b
 ```
 
 ---
@@ -432,7 +432,7 @@ c) Hacer un rebase interactivo para reescribir el historial antes de responder a
 d) Pedirle al owner que mergee igual y hacer el fix en un PR separado
 
 ```
-RESPUESTA_P2=
+RESPUESTA_P2=b
 ```
 
 ---
@@ -476,6 +476,7 @@ git push
 `git revert` crea un nuevo commit que deshace los cambios del commit indicado. A diferencia de `git reset`, no modifica el historial existente: agrega un commit nuevo encima. Esto es seguro en ramas compartidas porque no causa conflictos para quienes ya descargaron los commits anteriores.
 
 > Si nunca usaste vim, configurá nano como editor antes de correr el revert:
+>
 > ```bash
 > git config --global core.editor nano
 > ```
@@ -513,7 +514,7 @@ c) Porque `git reset --hard` modifica el historial local, generando conflictos p
 d) Porque GitHub bloquea automáticamente los push después de un `git reset --hard`
 
 ```
-RESPUESTA_P3=
+RESPUESTA_P3=c
 ```
 
 ---
@@ -544,6 +545,7 @@ Ambas implementaciones son correctas. Tenés que elegir cuál conservar (o combi
 ---
 
 ### Paso 17 — Modificar función esPar
+
 Primero asegurate de estar en `main` y actualizado:
 
 ```bash
@@ -567,6 +569,7 @@ git commit -m "Ajusta esPar en main con comentario de version"
 ```
 
 ### Paso 18 — Mergear desde origin y provocar el conflicto
+
 Traé referencias remotas y mergeá la branch preparada:
 
 ```bash
@@ -645,7 +648,7 @@ c) `(n & 1) == 0` no funciona con números negativos en ningún compilador C est
 d) No hay ninguna diferencia; el compilador genera exactamente el mismo código para ambas
 
 ```
-RESPUESTA_P4=
+RESPUESTA_P4=b
 ```
 
 ---
@@ -663,7 +666,7 @@ c) Si hay que revertir un cambio puntual es imposible sin deshacer todo lo del d
 d) Git rechaza commits que modifiquen demasiados archivos al mismo tiempo
 
 ```
-RESPUESTA_P5=
+RESPUESTA_P5=c
 ```
 
 ---
@@ -679,7 +682,7 @@ c) `git fetch` solo descarga la branch actual; `git pull` descarga todas las bra
 d) `git pull` siempre pide confirmación antes de modificar archivos locales; `git fetch` no
 
 ```
-RESPUESTA_P6=
+RESPUESTA_P6=b
 ```
 
 ---
@@ -695,7 +698,7 @@ c) Qué problema resuelve o qué funcionalidad agrega, cómo se verificó que fu
 d) El tiempo que tardó en implementarse y el nombre del autor
 
 ```
-RESPUESTA_P7=
+RESPUESTA_P7=c
 ```
 
 ---
